@@ -1,12 +1,10 @@
-// schema.prisma
-datasource db {
-  provider = "mysql"
-  url      = env("EXPRESS_SERVER01_DATABASE_URL")
-}
-
 generator client {
   provider = "prisma-client-js"
   previewFeatures = ["prismaSchemaFolder"]
 }
 
+datasource db {
+  provider = "mysql"
+  url      = env("EXPRESS_SERVER01_DATABASE_URL")
+}
 
