@@ -6,11 +6,11 @@ import { logTimer } from '../utils/logUtils';
  * RedisAdapter 을 통한 시그널 서버 인스턴스 연결, 관리
  * 복수의 시그널 서버를 레디스를 통해 연결한다.
  */
-export class RedisSession {
+class RedisSession {
   constructor() {
     this.pub = createClient({
-      url: `redis://${process.env.REDIS_URL}:${process.env.REDIS_PORT}`,
-      password: process.env.REDIS_PASSWORD,
+      url: `redis://${process.env.SIGNAL_SERVER_REDIS_URL}:${process.env.SIGNAL_SERVER_REDIS_PORT}`,
+      password: process.env.SIGNAL_SERVER_REDIS_PASSWORD,
     });
 
     this.sub = this.pub.duplicate();
@@ -50,15 +50,16 @@ export class RedisSession {
             .trim();
 
           console.log(
-            // `${logTimer()} [REDIS_MEMORY] Redis 메모리 사용율 : ${memoryUsage}`
             `${logTimer()} [MEMORY] Redis 사용 중인 메모리: ${usedMemory}, 전체 시스템 메모리: ${totalSystemMemory}`
           );
         } else {
           console.log('레디스 연결되지 않아 정보 파악 불가...');
         }
-      }, 10000); // 10초마다 메모리 사용량 로그 출력
+      }, 60000); // 60초마다 메모리 사용량 로그 출력
     } catch (error) {
       console.error('Redis 초기화 중 오류 발생:', error);
     }
   }
 }
+
+export default RedisSession;
